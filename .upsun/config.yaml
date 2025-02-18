@@ -140,7 +140,7 @@ applications:
 routes:
   "https://{default}/":
     type: upstream
-    upstream: "-:http"
+    upstream: "app:http"
   # A basic redirect definition
   # More information: DEFAULT VALUE DOCS BASE URL/define-routes.html#basic-redirect-definition
   "https://www.{default}":
