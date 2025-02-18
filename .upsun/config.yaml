@@ -1,0 +1,96 @@
+# Complete list of all available properties:
+# DEFAULT VALUE DOCS BASE URL/create-apps/app-reference/single-runtime-image.html
+
+applications:
+  - name: app-name  # Add a unique name for your application
+    source:
+      root: "/"
+
+    # The runtime the application uses.
+    type: "nodejs:20"
+
+    # Choose which container profile (ratio CPU+RAM) your app will use.
+    # Default value comes from the image itself.
+    # More information: https://docs.upsun.com/manage-resources/adjust-resources.html#adjust-a-container-profile
+    # container_profile: 
+
+    # The relationships of the application with services or other applications.
+    # relationships:
+    #   db: "database-service:endpoint"
+
+    # Mounts define directories that are writable after the build is complete.
+    mounts:
+      "/.npm":
+        source: "storage"
+        source_path: "npm"
+
+    # The web key configures the web server running in front of your app.
+    web:
+      upstream:
+        socket_family: tcp
+      locations:
+        "/":
+          passthru: true
+
+    # Alternate copies of the application to run as background processes.
+    # workers:
+
+    # The timezone for crons to run. Defaults to UTC.
+    # timezone: UTC
+
+    # Access control for roles accessing app environments.
+    # access:
+
+    # Variables to control the environment.
+    # variables:
+    #   env:
+    #     NODE_ENV: development
+
+    # Outbound firewall rules for the application.
+    # firewall:
+
+    # Specifies a default set of build tasks to run.
+    # build:
+    #   flavor: none
+
+    # Installs global dependencies as part of the build process.
+    # dependencies:
+    #   nodejs:
+    #     pm2: "^4.5.0"
+
+    # Hooks allow you to customize your code/environment as the project moves through build and deploy stages.
+    hooks:
+      build: |
+        set -eux
+        npm i
+        npm run build
+
+      deploy: |
+        set -eux
+        # echo 'Put your deploy command here'
+
+      # post_deploy: |
+
+    # Scheduled tasks for the app.
+    # crons:
+
+    # Customizations to your runtime.
+    # runtime:
+
+    # Additional hosts configuration.
+    # additional_hosts:
+
+# The services of the project.
+# services:
+#   db:
+#     type: postgresql:14
+
+# The routes of the project.
+routes:
+  "https://{default}/":
+    type: upstream
+    upstream: "app-name:http"
+
+  "https://www.{default}":
+    type: redirect
+    to: "https://{default}/"
