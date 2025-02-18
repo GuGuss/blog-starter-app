@@ -1,6 +1,6 @@
 # Complete list of all available properties: DEFAULT VALUE DOCS BASE URL/create-apps/app-reference/single-runtime-image.html
 applications:
-  -:
+  app:
     # Application source code directory
     source:
       root: "/"
